@@ -12,6 +12,8 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 public class HdCodedSvg extends Drawable {
   private final int size;
   private ColorFilter filter;
@@ -28,7 +30,7 @@ public class HdCodedSvg extends Drawable {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     Rect b = getBounds();
     draw(canvas, b.width(), b.height(), b.left, b.top);
   }

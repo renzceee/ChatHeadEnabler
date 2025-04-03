@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -70,8 +71,8 @@ public class ChatHeadSettings {
     AlertDialog setting = buildSettingDialog(context);
     AlertDialog disable = buildDisableDialog(context);
     if (!(context instanceof Activity) && Settings.canDrawOverlays(context)) {
-      setting.getWindow().setType(TYPE_APPLICATION_OVERLAY);
-      disable.getWindow().setType(TYPE_APPLICATION_OVERLAY);
+      Objects.requireNonNull(setting.getWindow()).setType(TYPE_APPLICATION_OVERLAY);
+      Objects.requireNonNull(disable.getWindow()).setType(TYPE_APPLICATION_OVERLAY);
     }
     button.setOnClickListener(view -> setting.show());
     button.setOnLongClickListener(view -> {
@@ -94,8 +95,11 @@ public class ChatHeadSettings {
     var appContext = context.getApplicationContext();
     var current = getMode(appContext) ? "bubble°" : "chat head";
     var dialog = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert)
-        .setMessage(isFallback ? "WARNING!\n\n" +
-            "Something went wrong, bubble mode might not work. Please report.\n" :
+        .setMessage(isFallback ? """
+                WARNING!
+                
+                Something went wrong, bubble mode might not work. Please report.
+                """ :
             "Choose your preferred feature.\n\n" + "-» Current: " + current + "\n"
         )
         .setPositiveButton("Chat Head", (d, w) -> {
@@ -113,7 +117,7 @@ public class ChatHeadSettings {
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.RED);
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.CYAN);
         dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(Color.YELLOW);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#233B43")));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#233B43")));
       } catch (Throwable ignore) {}
     });
     return dialog;
@@ -122,8 +126,10 @@ public class ChatHeadSettings {
   private static AlertDialog buildDisableDialog(Context context) {
     var appContext = context.getApplicationContext();
     return new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert)
-        .setMessage("Remove the toggle icon completely?\n\n" +
-            "[You cannot undo this action without clearing messenger app data]"
+        .setMessage("""
+                Remove the toggle icon completely?
+                
+                [You cannot undo this action without clearing messenger app data]"""
         )
         .setPositiveButton("Remove", (d, w) -> {
           DataPreferences.disableSetting(appContext);

@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'app.neonorbit.chatheadenabler'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         minSdk 30
-        targetSdk 33
+        targetSdk 35
         versionCode 245
         versionName '2.4.5'
         applicationId namespace
@@ -22,8 +22,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     applicationVariants.all { variant ->
@@ -52,5 +52,5 @@ android {
 dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     implementation 'io.github.neonorbit:dexplore:1.4.4'
-    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.annotation:annotation:1.7.1'
 }

@@ -9,6 +9,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.TypedValue;
 import android.widget.Toast;
 
@@ -34,9 +35,9 @@ import de.robv.android.xposed.XposedHelpers;
 public final class Util {
   public static void restartApp(Context context) {
     Intent intent = Intent.makeRestartActivityTask(
-        context.getPackageManager().getLaunchIntentForPackage(
-            context.getPackageName()
-        ).getComponent()
+        Objects.requireNonNull(context.getPackageManager().getLaunchIntentForPackage(
+                context.getPackageName()
+        )).getComponent()
     );
     context.startActivity(intent);
     Runtime.getRuntime().exit(0);
@@ -87,10 +88,13 @@ public final class Util {
     try {
       if (context == null) context = AndroidAppHelper.currentApplication();
       PackageManager pm = Objects.requireNonNull(context).getPackageManager();
-      return String.valueOf(pm.getPackageInfo(packageName, 0).getLongVersionCode());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return String.valueOf(pm.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0)).getLongVersionCode());
+        }
     } catch (Throwable t) {
       return null;
     }
+      return packageName;
   }
 
   public static void applyUnstableHook() {
