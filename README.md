@@ -10,7 +10,7 @@ An Xposed module that lets you choose between chat head and bubble in Facebook M
 
 Requirements
 ------------
-- Android 11+
+- Android 11 - 15
 - Root: [Magisk](https://github.com/topjohnwu/Magisk)
 - Xposed: [LSPosed](https://github.com/LSPosed/LSPosed)
 
